@@ -34,10 +34,12 @@
 
 class BleGamepad {
 private:
-  uint16_t _buttons;
+  uint8_t *_previousState;
+  uint8_t *_currentState;
   BleConnectionStatus* connectionStatus;
   BLEHIDDevice* hid;
   BLECharacteristic* inputGamepad;
+  void notify(void);
   void buttons(uint16_t b);
   void rawAction(uint8_t msg[], char msgSize);
   static void taskServer(void* pvParameter);
@@ -46,6 +48,7 @@ public:
   void begin(void);
   void end(void);
   void setAxes(signed char x, signed char y, signed char z = 0, signed char rZ = 0, char rX = 0, char rY = 0, signed char hat = 0);
+  void setHat(uint8_t hat = DPAD_CENTERED);   // CENTERED by defautl
   void press(uint16_t b = BUTTON_1);   // press BUTTON_1 by default
   void release(uint16_t b = BUTTON_1); // release BUTTON_1 by default
   bool isPressed(uint16_t b = BUTTON_1); // check BUTTON_1 by default
